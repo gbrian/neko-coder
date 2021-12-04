@@ -1,0 +1,37 @@
+version: "3.4"
+services:
+  neko-coder:
+    image: neko-coder
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "unless-stopped"
+    shm_size: "2gb"
+    ports:
+      - "9090:8080"
+      - "9091:8090"
+      - "52000-52100:52000-52100/udp"
+    environment:
+      NEKO_SCREEN: '1920x1080@30'
+      NEKO_PASSWORD: neko
+      NEKO_PASSWORD_ADMIN: admin
+      NEKO_EPR: 52000-52100
+      NEKO_NAT1TO1: 192.168.0.13
+      # CODER
+      PASSWORD: neko
+    volumes:
+      - $PWD/..:/home/coder/github
+
+  neko:
+    image: "m1k1o/neko:latest"
+    restart: "unless-stopped"
+    shm_size: "2gb"
+    ports:
+      - "1080:8080"
+      - "53000-53100:53000-53100/udp"
+    environment:
+      NEKO_SCREEN: '1920x1080@30'
+      NEKO_PASSWORD: neko
+      NEKO_PASSWORD_ADMIN: admin
+      NEKO_EPR: 53000-53100
+      NEKO_NAT1TO1: 192.168.0.13
